@@ -1,32 +1,55 @@
-import { Outlet, useLocation, Link } from 'react-router-dom'
-import { motion } from 'framer-motion'
-import { RiHome5Line, RiHome5Fill } from 'react-icons/ri'
-import { BsChatDots, BsChatDotsFill } from 'react-icons/bs'
-import { FaRegUser, FaUser } from 'react-icons/fa'
-import { useTheme } from '../contexts/ThemeContext'
-import ThemeToggle from './ThemeToggle'
+import { Outlet, useLocation, Link } from 'react-router-dom';
+import { motion } from 'framer-motion';
+import { RiHome5Line, RiHome5Fill } from 'react-icons/ri';
+import { BsChatDots, BsChatDotsFill } from 'react-icons/bs';
+import { FaRegUser, FaUser } from 'react-icons/fa';
+import { useTheme } from '../contexts/ThemeContext';
+import ThemeToggle from './ThemeToggle';
 
 export default function Layout() {
-  const location = useLocation()
-  const { isDarkMode } = useTheme()
+  const location = useLocation();
+  const { isDarkMode } = useTheme();
 
   const navItems = [
     { path: '/', label: 'Home', IconOutline: RiHome5Line, IconFill: RiHome5Fill },
     { path: '/chats', label: 'Chats', IconOutline: BsChatDots, IconFill: BsChatDotsFill },
     { path: '/profile', label: 'Profile', IconOutline: FaRegUser, IconFill: FaUser },
-  ]
+  ];
+
+  const handleConnectWallet = () => {
+    // Add wallet connection logic here
+    console.log('Connect Wallet button clicked');
+  };
 
   return (
-    <div className={`min-h-screen transition-colors-all duration-300 ${
-      isDarkMode ? 'bg-dark-ambient' : 'bg-light-ambient'
-    }`}>
+    <div
+      className={`min-h-screen transition-colors-all duration-300 ${
+        isDarkMode ? 'bg-dark-ambient' : 'bg-light-ambient'
+      }`}
+    >
       <header className="flex items-center justify-between p-4">
         <h1 className="text-2xl font-bold text-transparent bg-gradient-to-r from-primary to-secondary bg-clip-text">
+<<<<<<< HEAD
         Stackz 🍌
+=======
+          Stackz
+>>>>>>> 5409c86fd170cdd303c50fc284e033b74a70dbf8
         </h1>
-        <ThemeToggle />
+        <div className="flex items-center gap-4">
+          <button
+            onClick={handleConnectWallet}
+            className={`px-4 py-2 rounded-lg text-sm font-semibold ${
+              isDarkMode
+                ? 'bg-primary-light text-dark-ambient hover:bg-primary-dark'
+                : 'bg-primary text-light-ambient hover:bg-primary-dark'
+            }`}
+          >
+            Connect Wallet
+          </button>
+          <ThemeToggle />
+        </div>
       </header>
-      
+
       <main className="pb-20">
         <Outlet />
       </main>
@@ -41,10 +64,10 @@ export default function Layout() {
                   className="absolute inset-0 bg-red-100 rounded-lg dark:bg-red-100 opacity-20"
                   initial={{ scale: 0.8, opacity: 0 }}
                   animate={{ scale: 1, opacity: 0.2 }}
-                  transition={{ 
-                    type: "spring", 
-                    bounce: 0.2, 
-                    duration: 0.6 
+                  transition={{
+                    type: 'spring',
+                    bounce: 0.2,
+                    duration: 0.6,
                   }}
                 />
               )}
@@ -54,11 +77,13 @@ export default function Layout() {
                 ) : (
                   <IconOutline className="w-6 h-6 text-gray-600 dark:text-gray-400" />
                 )}
-                <span className={`text-xs mt-1 ${
-                  location.pathname === path 
-                    ? 'text-primary dark:text-primary-light' 
-                    : 'text-gray-600 dark:text-gray-400'
-                }`}>
+                <span
+                  className={`text-xs mt-1 ${
+                    location.pathname === path
+                      ? 'text-primary dark:text-primary-light'
+                      : 'text-gray-600 dark:text-gray-400'
+                  }`}
+                >
                   {label}
                 </span>
               </div>
@@ -67,5 +92,5 @@ export default function Layout() {
         </div>
       </nav>
     </div>
-  )
+  );
 }

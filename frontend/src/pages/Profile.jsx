@@ -37,7 +37,6 @@ export default function Profile() {
   const actions = [
     { label: 'Add Funds', icon: FaPlus },
     { label: 'Swap', icon: FaExchangeAlt },
-    { label: 'Off Ramp', icon: FaMoneyBillWave },
     { label: 'Copy', icon: FaCopy },
   ]
 
@@ -87,8 +86,8 @@ export default function Profile() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.6 }}
       >
-        <StatCard label="P&L" value={formatCurrency(100)} change={34.5} />
-        <StatCard label="XIRR" value="17.32%" change={17.32} />
+        {/* <StatCard label="P&L" value={formatCurrency(100)} change={34.5} />
+        <StatCard label="XIRR" value="17.32%" change={17.32} /> */}
         <StatCard label="Invested" value={formatCurrency(100)} />
         <StatCard label="Current" value={formatCurrency(300)} />
       </motion.div>
