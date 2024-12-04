@@ -5,10 +5,10 @@ import { MessageSquare, Send, Paperclip, Smile, MoreVertical, ChevronLeft } from
 const mockChats = [
   {
     id: 1,
-    name: 'AI Financial Assistant',
+    name: 'Stackz AI Assistant',
     profileImage: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=100&q=80',
     messages: [
-      { id: 1, text: 'Hi there! Ready to discuss your investment strategy?', sender: 'AI', time: '10:30 AM' }
+      { id: 1, text: 'Welcome to Stackz! How can I assist you today?', sender: 'AI', time: '4:30 AM' }
     ],
     active: true
   }
@@ -36,18 +36,22 @@ export default function Chats() {
   }, [selectedChat.messages])
 
   const getAIPrompt = (userInput) => {
-    return `You are a highly knowledgeable and engaging AI Financial Assistant for investment advice. 
-    Provide a strategic, informative, and slightly witty response to the following query: ${userInput}
-
-    Guidelines:
-    - Be precise and actionable, but add a touch of humor or an interesting fact when appropriate
-    - Offer clear investment insights with real-world examples or analogies
-    - Consider risk and potential returns, explaining them in an easy-to-understand manner
-    - Use professional financial language, but explain any complex terms
-    - Limit response to 150-200 words
-    - End with a thought-provoking question or a call-to-action to encourage further engagement`;
+    return `
+      You are Stackz Assistant, a highly knowledgeable and articulate AI assistant for our DeFi platform, which leverages the TON SDK and operates on the TON Network. Your primary focus is to provide clear, concise, and engaging responses (100-200 characters) tailored to users interested in:
+      
+      - **SIPs (Systematic Investment Plans)**: Explain how our platform supports strategic and periodic investments in TON-based tokens.
+      - **Portfolios**: Highlight portfolio tracking, optimization, and user-friendly analytics to help users manage their TON assets efficiently.
+      - **Token Management**: Detail features like minting, swapping, staking, and holding tokens with an emphasis on security and transparency.
+  
+      Key goals:
+      - Ensure technical accuracy while maintaining simplicity for a diverse user audience, from beginners to experienced DeFi users.
+      - Provide relevant examples or comparisons to enhance user understanding when appropriate.
+      - Highlight the unique value proposition of our platform compared to other DeFi platforms.
+  
+      Respond with actionable and precise answers while avoiding overly technical jargon unless explicitly requested. Query: ${userInput}
+    `;
   };
-
+  
   const getAIResponse = async (userInput) => {
     const API_KEY = 'AIzaSyAOLy9mK_xrJ5cpYPTaO-TokDC87UFeThQ';
     
@@ -77,7 +81,7 @@ export default function Chats() {
       return data.candidates[0].content.parts[0].text;
     } catch (error) {
       console.error('API Error:', error);
-      return "I apologize, but I'm experiencing difficulties processing your request. Please try again.";
+      return "Error. Please try again.";
     }
   };
 
@@ -128,19 +132,19 @@ export default function Chats() {
   }
 
   return (
-    <div className="flex flex-col h-[calc(100vh-8rem)] bg-white dark:bg-gray-900">
+    <div className="flex flex-col h-[calc(100vh-8rem)] bg-background-light-primary dark:bg-background-dark-primary transition-colors-all duration-300">
       {/* Mobile Header */}
       {isMobileView && (
-        <div className="flex items-center justify-between p-4 border-b border-gray-200 dark:border-gray-700">
+        <div className="flex items-center justify-between p-4 border-b border-neutral-light dark:border-neutral-dark">
           {!showChatList && (
-            <button onClick={() => setShowChatList(true)} className="text-blue-600 dark:text-blue-400">
+            <button onClick={() => setShowChatList(true)} className="text-primary dark:text-primary-light">
               <ChevronLeft size={24} />
             </button>
           )}
-          <h1 className="text-xl font-bold text-gray-900 dark:text-white">
+          <h1 className="text-xl font-bold text-text-light-primary dark:text-text-dark-primary">
             {showChatList ? 'Chats' : selectedChat.name}
           </h1>
-          <MessageSquare className="text-blue-600 dark:text-blue-400" />
+          <MessageSquare className="text-primary dark:text-primary-light" />
         </div>
       )}
 
@@ -152,23 +156,25 @@ export default function Chats() {
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
               exit={{ opacity: 0, x: -20 }}
-              className="w-full border-r border-gray-200 md:w-1/3 dark:border-gray-700 bg-gray-50 dark:bg-gray-800"
+              className="w-full border-r md:w-1/3 border-neutral-light dark:border-neutral-dark bg-background-light-secondary dark:bg-background-dark-secondary"
             >
               {!isMobileView && (
-                <div className="flex items-center justify-between p-4 border-b border-gray-200 dark:border-gray-700">
-                  <h2 className="text-xl font-bold text-gray-900 dark:text-white">Chats</h2>
-                  <MessageSquare className="text-blue-600 dark:text-blue-400" />
+                <div className="flex items-center justify-between p-4 border-b border-neutral-light dark:border-neutral-dark">
+                  <h2 className="text-xl font-bold text-text-light-primary dark:text-text-dark-primary">Chats</h2>
+                  <MessageSquare className="text-primary dark:text-primary-light" />
                 </div>
               )}
               
-              <div className="h-full overflow-y-auto divide-y divide-gray-200 dark:divide-gray-700">
+              <div className="h-full overflow-y-auto divide-y divide-neutral-light/10 dark:divide-neutral-dark/10">
                 {mockChats.map(chat => (
                   <motion.div
                     key={chat.id}
                     whileHover={{ scale: 1.02 }}
                     onClick={() => handleChatSelect(chat)}
                     className={`p-4 cursor-pointer flex items-center space-x-4 ${
-                      selectedChat.id === chat.id ? 'bg-gray-100 dark:bg-gray-700' : ''
+                      selectedChat.id === chat.id 
+                        ? 'bg-background-light-accent dark:bg-background-dark-accent' 
+                        : ''
                     }`}
                   >
                     <img 
@@ -178,12 +184,12 @@ export default function Chats() {
                     />
                     <div className="flex-1 min-w-0">
                       <div className="flex justify-between">
-                        <h3 className="font-semibold text-gray-900 truncate dark:text-white">{chat.name}</h3>
-                        <span className="ml-2 text-xs text-gray-500 dark:text-gray-400 whitespace-nowrap">
+                        <h3 className="font-semibold truncate text-text-light-primary dark:text-text-dark-primary">{chat.name}</h3>
+                        <span className="ml-2 text-xs text-text-light-muted dark:text-text-dark-muted whitespace-nowrap">
                           {chat.messages[chat.messages.length - 1].time}
                         </span>
                       </div>
-                      <p className="text-sm text-gray-500 truncate dark:text-gray-400">
+                      <p className="text-sm truncate text-text-light-secondary dark:text-text-dark-secondary">
                         {chat.messages[chat.messages.length - 1].text}
                       </p>
                     </div>
@@ -205,23 +211,23 @@ export default function Chats() {
             >
               {/* Chat Header */}
               {!isMobileView && (
-                <div className="flex items-center justify-between p-4 border-b border-gray-200 dark:border-gray-700">
+                <div className="flex items-center justify-between p-4 border-b border-neutral-light dark:border-neutral-dark">
                   <div className="flex items-center space-x-4">
                     <img 
                       src={selectedChat.profileImage} 
                       alt={selectedChat.name} 
                       className="object-cover w-12 h-12 rounded-full"
                     />
-                    <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
+                    <h2 className="text-xl font-semibold text-text-light-primary dark:text-text-dark-primary">
                       {selectedChat.name}
                     </h2>
                   </div>
-                  <MoreVertical className="text-gray-500 dark:text-gray-400" />
+                  <MoreVertical className="text-text-light-secondary dark:text-text-dark-secondary" />
                 </div>
               )}
 
               {/* Chat Messages */}
-              <div className="flex-1 p-4 space-y-4 overflow-y-auto bg-gray-100 dark:bg-gray-800">
+              <div className="flex-1 p-4 space-y-4 overflow-y-auto bg-background-light-accent dark:bg-background-dark-accent">
                 {selectedChat.messages.map(message => (
                   <div 
                     key={message.id} 
@@ -232,8 +238,8 @@ export default function Chats() {
                     <div 
                       className={`max-w-[70%] p-3 rounded-xl ${
                         message.sender === 'User'
-                          ? 'bg-blue-600 text-white'
-                          : 'bg-white dark:bg-gray-700 text-gray-900 dark:text-white'
+                          ? 'bg-primary text-white dark:bg-primary-dark'
+                          : 'bg-neutral-light dark:bg-neutral-dark text-text-light-primary dark:text-text-dark-primary'
                       }`}
                     >
                       <p className="break-words">{message.text}</p>
@@ -246,8 +252,8 @@ export default function Chats() {
                 
                 {isLoading && (
                   <div className="flex justify-start">
-                    <div className="max-w-[70%] p-3 rounded-xl bg-white dark:bg-gray-700">
-                      <p className="animate-pulse">AI is thinking...</p>
+                    <div className="max-w-[70%] p-3 rounded-xl bg-neutral-light dark:bg-neutral-dark">
+                      <p className="text-background-dark-primary animate-pulse">AI is thinking...</p>
                     </div>
                   </div>
                 )}
@@ -256,24 +262,24 @@ export default function Chats() {
               </div>
 
               {/* Message Input */}
-              <div className="flex items-center p-4 space-x-2 border-t border-gray-200 dark:border-gray-700">
-                <Smile className="flex-shrink-0 text-gray-500 cursor-pointer dark:text-gray-400" />
-                <Paperclip className="flex-shrink-0 text-gray-500 cursor-pointer dark:text-gray-400" />
+              <div className="flex items-center p-4 space-x-2 border-t border-neutral-light dark:border-neutral-dark">
+                <Smile className="flex-shrink-0 cursor-pointer text-text-light-secondary dark:text-text-dark-secondary" />
+                <Paperclip className="flex-shrink-0 cursor-pointer text-text-light-secondary dark:text-text-dark-secondary" />
                 <input 
                   type="text"
                   value={newMessage}
                   onChange={(e) => setNewMessage(e.target.value)}
                   onKeyPress={(e) => e.key === 'Enter' && handleSendMessage()}
                   placeholder="Type a message..."
-                  className="flex-1 p-2 text-gray-900 placeholder-gray-500 bg-gray-100 rounded-full dark:bg-gray-700 dark:text-white dark:placeholder-gray-400"
+                  className="flex-1 p-2 rounded-full bg-background-light-secondary dark:bg-background-dark-secondary text-text-light-primary dark:text-text-dark-primary placeholder-text-light-muted dark:placeholder-text-dark-muted"
                 />
                 <motion.button 
                   whileTap={{ scale: 0.9 }}
                   onClick={handleSendMessage}
                   className={`p-2 rounded-full flex-shrink-0 ${
                     newMessage.trim() 
-                      ? 'bg-blue-600 text-white shadow-lg'
-                      : 'bg-gray-300 dark:bg-gray-600 text-gray-500 dark:text-gray-400 cursor-not-allowed'
+                      ? 'bg-primary text-white dark:bg-primary-dark shadow-btn-light dark:shadow-btn-dark'
+                      : 'bg-neutral-light dark:bg-neutral-dark text-text-light-muted dark:text-text-dark-muted cursor-not-allowed'
                   }`}
                   disabled={!newMessage.trim() || isLoading}
                 >
