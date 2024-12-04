@@ -1,25 +1,44 @@
 import { motion } from 'framer-motion'
-import { FaPlus } from 'react-icons/fa'
+import { FaPlus, FaExchangeAlt, FaMoneyBillWave, FaCopy } from 'react-icons/fa'
 import { formatCurrency } from '../utils/formatCurrency'
+import { useTheme } from '../contexts/ThemeContext'
 
-const ActionButton = ({ label, icon: Icon = FaPlus }) => (
+const ActionButton = ({ label, icon: Icon }) => (
   <motion.button
+    whileHover={{ scale: 1.05 }}
     whileTap={{ scale: 0.95 }}
     className="flex flex-col items-center"
   >
-    <div className="w-12 h-12 bg-[#CCFF00] rounded-full flex items-center justify-center mb-2">
-      <Icon className="w-5 h-5 text-black" />
+    <div className="flex items-center justify-center mb-2 rounded-full shadow-lg w-14 h-14 bg-neon">
+      <Icon className="w-6 h-6 text-background-dark-primary" />
     </div>
-    <span className="text-sm text-gray-400">{label}</span>
+    <span className="text-sm text-text-light-secondary dark:text-text-dark-secondary">{label}</span>
   </motion.button>
 )
 
+const StatCard = ({ label, value, change }) => (
+  <motion.div
+    whileHover={{ scale: 1.05 }}
+    className="p-4 bg-background-light-secondary dark:bg-background-dark-secondary rounded-xl shadow-light-soft dark:shadow-dark-soft"
+  >
+    <h3 className="mb-1 text-sm font-semibold text-text-light-secondary dark:text-text-dark-secondary">{label}</h3>
+    <p className="text-xl font-bold text-text-light-primary dark:text-text-dark-primary">{value}</p>
+    {change && (
+      <p className={`text-sm font-semibold ${change >= 0 ? 'text-green-500' : 'text-red-500'}`}>
+        {change >= 0 ? '+' : ''}{change}%
+      </p>
+    )}
+  </motion.div>
+)
+
 export default function Profile() {
+  const { isDarkMode } = useTheme()
+
   const actions = [
-    { label: 'Add Funds' },
-    { label: 'Swap' },
-    { label: 'Off Ramp' },
-    { label: 'Copy' },
+    { label: 'Add Funds', icon: FaPlus },
+    { label: 'Swap', icon: FaExchangeAlt },
+    { label: 'Off Ramp', icon: FaMoneyBillWave },
+    { label: 'Copy', icon: FaCopy },
   ]
 
   const topGainers = [
@@ -33,79 +52,98 @@ export default function Profile() {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: 20 }}
-      className="p-6 space-y-6"
+      className="p-6 space-y-8"
     >
       {/* Profile Header */}
-      <div className="space-y-2 text-center">
-        <div className="flex items-center justify-center w-16 h-16 mx-auto bg-gray-800 rounded-full">
-          <span className="text-3xl">🍌</span>
+      <motion.div 
+        className="space-y-3 text-center"
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.2 }}
+      >
+        <div className="flex items-center justify-center w-24 h-24 mx-auto rounded-full shadow-xl bg-gradient-to-br from-primary to-secondary">
+          <span className="text-4xl">👽</span>
         </div>
-        <h1 className="text-xl font-bold">Ayush Yadav</h1>
-        <p className="text-sm text-gray-400">0x70...52d2</p>
-      </div>
+        <h1 className="text-2xl font-bold text-text-light-primary dark:text-text-dark-primary">Memerizer</h1>
+        <p className="text-sm text-text-light-secondary dark:text-text-dark-secondary">0x70...52d2</p>
+      </motion.div>
 
       {/* Action Buttons */}
-      <div className="flex justify-between px-4">
-        {actions.map((action) => (
+      <motion.div 
+        className="flex justify-between px-4"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.4 }}
+      >
+        {actions.map((action, index) => (
           <ActionButton key={action.label} {...action} />
         ))}
-      </div>
+      </motion.div>
 
-      {/* Portfolio Card */}
-      <div className="bg-[#111] rounded-xl p-4 space-y-4">
-        <h2 className="text-xl font-bold">Portfolio</h2>
-        <div className="grid grid-cols-2 gap-4">
-          <div>
-            <p className="mb-1 text-gray-400">P&L</p>
-            <p className="font-bold text-green-400">{formatCurrency(100)} +34.5%</p>
-          </div>
-          <div>
-            <p className="mb-1 text-gray-400">XIRR</p>
-            <p className="font-bold text-green-400">+17.32%</p>
-          </div>
-          <div>
-            <p className="mb-1 text-gray-400">Invested</p>
-            <p className="font-bold">{formatCurrency(100)}</p>
-          </div>
-          <div>
-            <p className="mb-1 text-gray-400">Current</p>
-            <p className="font-bold">{formatCurrency(300)}</p>
-          </div>
-        </div>
-      </div>
+      {/* Portfolio Stats */}
+      <motion.div 
+        className="grid grid-cols-2 gap-4"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.6 }}
+      >
+        <StatCard label="P&L" value={formatCurrency(100)} change={34.5} />
+        <StatCard label="XIRR" value="17.32%" change={17.32} />
+        <StatCard label="Invested" value={formatCurrency(100)} />
+        <StatCard label="Current" value={formatCurrency(300)} />
+      </motion.div>
 
       {/* Top Gainers */}
-      <div className="bg-[#111] rounded-xl p-4">
-        <h2 className="mb-4 text-xl font-bold">Top Gainers</h2>
-        <div className="space-y-3">
+      <motion.div 
+        className="p-6 bg-background-light-secondary dark:bg-background-dark-secondary rounded-xl shadow-light-soft dark:shadow-dark-soft"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.8 }}
+      >
+        <h2 className="mb-4 text-xl font-bold text-text-light-primary dark:text-text-dark-primary">Top Gainers</h2>
+        <div className="space-y-4">
           {topGainers.map((gainer) => (
-            <div key={gainer.name} className="flex items-center justify-between">
-              <span className="text-gray-400">{gainer.name}</span>
-              <span className="text-green-400">{gainer.percentage}%</span>
-            </div>
+            <motion.div 
+              key={gainer.name} 
+              className="flex items-center justify-between"
+              whileHover={{ x: 5 }}
+            >
+              <span className="text-text-light-secondary dark:text-text-dark-secondary">{gainer.name}</span>
+              <span className="font-semibold text-green-400">+{gainer.percentage}%</span>
+            </motion.div>
           ))}
         </div>
-      </div>
+      </motion.div>
 
       {/* Rewards Section */}
-      <div className="bg-[#111] rounded-xl p-4">
-        <h2 className="mb-4 text-xl font-bold">Rewards</h2>
-        <p className="mb-4 text-2xl font-bold">2230 points</p>
-        <div className="flex justify-between text-sm text-gray-400">
-          <div>
-            <p>Refer Friends</p>
-            <p className="font-mono text-white">DFG-EJY</p>
-          </div>
-          <div>
-            <p>Daily Streak</p>
-            <p className="text-white">🔥 3</p>
-          </div>
-          <div>
-            <p>Bags Invested</p>
-            <p className="text-white">💰 2</p>
+      <motion.div 
+        className="p-6 bg-background-light-secondary dark:bg-background-dark-secondary rounded-xl shadow-light-soft dark:shadow-dark-soft"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 1 }}
+      >
+        <h2 className="mb-4 text-xl font-bold text-text-light-primary dark:text-text-dark-primary">Rewards</h2>
+        <div className="flex items-center justify-between mb-6">
+          <p className="text-3xl font-bold text-text-light-primary dark:text-text-dark-primary">2230</p>
+          <div className="px-3 py-1 text-sm font-semibold rounded-full bg-neon text-background-dark-primary">
+            Points
           </div>
         </div>
-      </div>
+        <div className="grid grid-cols-3 gap-4 text-center">
+          <div>
+            <p className="mb-1 text-text-light-secondary dark:text-text-dark-secondary">Refer Friends</p>
+            <p className="px-2 py-1 font-mono rounded text-text-light-primary dark:text-text-dark-primary bg-background-light-accent dark:bg-background-dark-accent">DFG-EJY</p>
+          </div>
+          <div>
+            <p className="mb-1 text-text-light-secondary dark:text-text-dark-secondary">Daily Streak</p>
+            <p className="text-xl text-text-light-primary dark:text-text-dark-primary">🔥 3</p>
+          </div>
+          <div>
+            <p className="mb-1 text-text-light-secondary dark:text-text-dark-secondary">Bags Invested</p>
+            <p className="text-xl text-text-light-primary dark:text-text-dark-primary">💰 2</p>
+          </div>
+        </div>
+      </motion.div>
     </motion.div>
   )
 }
