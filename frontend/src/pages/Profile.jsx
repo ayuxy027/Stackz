@@ -38,9 +38,9 @@ export default function Profile() {
       {/* Profile Header */}
       <div className="space-y-2 text-center">
         <div className="flex items-center justify-center w-16 h-16 mx-auto bg-gray-800 rounded-full">
-          <span className="text-3xl">👽</span>
+          <span className="text-3xl">🍌</span>
         </div>
-        <h1 className="text-xl font-bold">Memerizer</h1>
+        <h1 className="text-xl font-bold">Ayush Yadav</h1>
         <p className="text-sm text-gray-400">0x70...52d2</p>
       </div>
 
