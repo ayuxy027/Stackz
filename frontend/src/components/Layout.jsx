@@ -5,10 +5,21 @@ import { BsChatDots, BsChatDotsFill } from 'react-icons/bs';
 import { FaRegUser, FaUser } from 'react-icons/fa';
 import { useTheme } from '../contexts/ThemeContext';
 import ThemeToggle from './ThemeToggle';
+import {
+  useTonAddress,
+  useTonConnectModal,
+  useTonConnectUI,
+} from "@tonconnect/ui-react";
 
 export default function Layout() {
   const location = useLocation();
   const { isDarkMode } = useTheme();
+  const { state, open } = useTonConnectModal();
+  const [tonConnectUI] = useTonConnectUI();
+  const userFriendlyAddress = useTonAddress();
+
+
+
 
   const navItems = [
     { path: '/', label: 'Home', IconOutline: RiHome5Line, IconFill: RiHome5Fill },
@@ -17,9 +28,10 @@ export default function Layout() {
   ];
 
   const handleConnectWallet = () => {
-    // Add wallet connection logic here
-    console.log('Connect Wallet button clicked');
-  };
+    if (!userFriendlyAddress) {
+      console.log("Connecting TON wallet...");
+      open();
+    }  };
 
   return (
     <div
