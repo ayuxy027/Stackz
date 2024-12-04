@@ -1,11 +1,11 @@
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { FiChevronDown, FiChevronUp } from 'react-icons/fi'
+import { FiChevronDown, FiChevronUp, FiPlus, FiMinus } from 'react-icons/fi'
 import { formatCurrency } from '../utils/formatCurrency'
 import { useTheme } from '../contexts/ThemeContext'
 
-const SubSection = ({ title, data, render }) => {
-  const [isOpen, setIsOpen] = useState(true)  // Default to true
+const SubSection = ({ title, data, render, defaultOpen = false }) => {
+  const [isOpen, setIsOpen] = useState(defaultOpen)
   const { isDarkMode } = useTheme()
 
   return (
@@ -17,15 +17,42 @@ const SubSection = ({ title, data, render }) => {
         onClick={() => setIsOpen(!isOpen)}
       >
         <h2 className="text-xl font-bold text-text-light-primary dark:text-text-dark-primary">{title}</h2>
-        {isOpen ? <FiChevronUp /> : <FiChevronDown />}
+        <div className="flex items-center">
+          {isOpen ? (
+            <>
+              <FiMinus className={`mr-2 ${!isDarkMode ? 'text-black' : ''}`} />
+              <FiChevronUp className={!isDarkMode ? 'text-black' : ''} />
+            </>
+          ) : (
+            <>
+              <FiPlus className={`mr-2 ${!isDarkMode ? 'text-black' : ''}`} />
+              <FiChevronDown className={!isDarkMode ? 'text-black' : ''} />
+            </>
+          )}
+        </div>
       </button>
       <AnimatePresence>
         {isOpen && (
           <motion.div
-            initial={{ height: 0, opacity: 0 }}
-            animate={{ height: 'auto', opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.3 }}
+            key="content"
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ 
+              opacity: 1, 
+              height: 'auto',
+              transition: {
+                duration: 0.3,
+                ease: [0.4, 0, 0.2, 1]
+              }
+            }}
+            exit={{ 
+              opacity: 0, 
+              height: 0,
+              transition: {
+                duration: 0.2,
+                ease: [0.4, 0, 0.2, 1]
+              }
+            }}
+            className="overflow-hidden"
           >
             <div className="p-4 border-t border-gray-200 dark:border-gray-700">
               {render(data)}
@@ -63,75 +90,114 @@ export default function Home() {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: 20 }}
+      transition={{ 
+        duration: 0.3,
+        ease: [0.4, 0, 0.2, 1]
+      }}
       className="p-6 space-y-6"
     >
-      <h1 className="text-3xl font-bold text-transparent bg-gradient-to-r from-primary to-secondary bg-clip-text">
-        Welcome to Bagz ✨
-      </h1>
+      <div className="mb-8">
+        <h1 className="text-3xl font-bold text-transparent bg-gradient-to-r from-primary to-secondary bg-clip-text">
+          Welcome to Bagz ✨
+        </h1>
+        <span className='text-lg font-semibold text-transparent bg-gradient-to-r from-primary to-secondary bg-clip-text'>
+          Simplify. Diversify. Stack Crypto Wealth
+        </span>
+      </div>
 
-      <SubSection
-        title="Explore"
-        data={exploreData}
-        render={(data) => (
-          <div className="space-y-4">
-            {data.map((item) => (
-              <div key={item.symbol} className="flex items-center justify-between">
-                <div>
-                  <h3 className="font-semibold text-text-light-primary dark:text-text-dark-primary">{item.name}</h3>
-                  <p className="text-sm text-text-light-secondary dark:text-text-dark-secondary">{item.symbol}</p>
+      <div className="space-y-6">
+        <SubSection
+          title="Explore"
+          data={exploreData}
+          defaultOpen={true}
+          render={(data) => (
+            <div className="space-y-4">
+              {data.map((item) => (
+                <div 
+                  key={item.symbol} 
+                  className="flex items-center justify-between py-2 border-b border-gray-100 last:border-b-0 dark:border-gray-800"
+                >
+                  <div>
+                    <h3 className="font-semibold text-text-light-primary dark:text-text-dark-primary">
+                      {item.name}
+                    </h3>
+                    <p className="text-sm text-text-light-secondary dark:text-text-dark-secondary">
+                      {item.symbol}
+                    </p>
+                  </div>
+                  <div className="text-right">
+                    <p className="font-semibold text-text-light-primary dark:text-text-dark-primary">
+                      {formatCurrency(item.price)}
+                    </p>
+                    <p className={item.change >= 0 ? 'text-green-500' : 'text-red-500'}>
+                      {item.change >= 0 ? '+' : ''}{item.change}%
+                    </p>
+                  </div>
                 </div>
-                <div className="text-right">
-                  <p className="font-semibold text-text-light-primary dark:text-text-dark-primary">{formatCurrency(item.price)}</p>
-                  <p className={item.change >= 0 ? 'text-green-500' : 'text-red-500'}>
-                    {item.change >= 0 ? '+' : ''}{item.change}%
-                  </p>
-                </div>
-              </div>
-            ))}
-          </div>
-        )}
-      />
+              ))}
+            </div>
+          )}
+        />
 
-      <SubSection
-        title="SIP (Systematic Investment Plan)"
-        data={sipData}
-        render={(data) => (
-          <div className="space-y-4">
-            {data.map((item) => (
-              <div key={item.name} className="flex items-center justify-between">
-                <div>
-                  <h3 className="font-semibold text-text-light-primary dark:text-text-dark-primary">{item.name}</h3>
-                  <p className="text-sm text-text-light-secondary dark:text-text-dark-secondary">{item.frequency}</p>
+        <SubSection
+          title="SIP"
+          data={sipData}
+          render={(data) => (
+            <div className="space-y-4">
+              {data.map((item) => (
+                <div 
+                  key={item.name} 
+                  className="flex items-center justify-between py-2 border-b border-gray-100 last:border-b-0 dark:border-gray-800"
+                >
+                  <div>
+                    <h3 className="font-semibold text-text-light-primary dark:text-text-dark-primary">
+                      {item.name}
+                    </h3>
+                    <p className="text-sm text-text-light-secondary dark:text-text-dark-secondary">
+                      {item.frequency}
+                    </p>
+                  </div>
+                  <div className="text-right">
+                    <p className="font-semibold text-text-light-primary dark:text-text-dark-primary">
+                      {formatCurrency(item.amount)}
+                    </p>
+                    <p className="text-sm text-text-light-secondary dark:text-text-dark-secondary">
+                      Next: {item.nextDate}
+                    </p>
+                  </div>
                 </div>
-                <div className="text-right">
-                  <p className="font-semibold text-text-light-primary dark:text-text-dark-primary">{formatCurrency(item.amount)}</p>
-                  <p className="text-sm text-text-light-secondary dark:text-text-dark-secondary">Next: {item.nextDate}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-        )}
-      />
+              ))}
+            </div>
+          )}
+        />
 
-      <SubSection
-        title="Portfolio"
-        data={portfolioData}
-        render={(data) => (
-          <div className="space-y-4">
-            {data.map((item) => (
-              <div key={item.name} className="flex items-center justify-between">
-                <h3 className="font-semibold text-text-light-primary dark:text-text-dark-primary">{item.name}</h3>
-                <div className="text-right">
-                  <p className="font-semibold text-text-light-primary dark:text-text-dark-primary">{formatCurrency(item.value)}</p>
-                  <p className={item.change >= 0 ? 'text-green-500' : 'text-red-500'}>
-                    {item.change >= 0 ? '+' : ''}{item.change}%
-                  </p>
+        <SubSection
+          title="Portfolio"
+          data={portfolioData}
+          render={(data) => (
+            <div className="space-y-4">
+              {data.map((item) => (
+                <div 
+                  key={item.name} 
+                  className="flex items-center justify-between py-2 border-b border-gray-100 last:border-b-0 dark:border-gray-800"
+                >
+                  <h3 className="font-semibold text-text-light-primary dark:text-text-dark-primary">
+                    {item.name}
+                  </h3>
+                  <div className="text-right">
+                    <p className="font-semibold text-text-light-primary dark:text-text-dark-primary">
+                      {formatCurrency(item.value)}
+                    </p>
+                    <p className={item.change >= 0 ? 'text-green-500' : 'text-red-500'}>
+                      {item.change >= 0 ? '+' : ''}{item.change}%
+                    </p>
+                  </div>
                 </div>
-              </div>
-            ))}
-          </div>
-        )}
-      />
+              ))}
+            </div>
+          )}
+        />
+      </div>
     </motion.div>
   )
 }

@@ -26,9 +26,11 @@ export default function Layout() {
         </h1>
         <ThemeToggle />
       </header>
+      
       <main className="pb-20">
         <Outlet />
       </main>
+
       <nav className="fixed bottom-0 left-0 right-0 border-t border-gray-200 bg-background-light-primary dark:bg-background-dark-primary dark:border-gray-800">
         <div className="flex items-center justify-around p-4">
           {navItems.map(({ path, label, IconOutline, IconFill }) => (
@@ -36,8 +38,14 @@ export default function Layout() {
               {location.pathname === path && (
                 <motion.span
                   layoutId="bubble"
-                  className="absolute inset-0 rounded-lg bg-primary-light dark:bg-primary-dark opacity-20"
-                  transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
+                  className="absolute inset-0 bg-red-100 rounded-lg dark:bg-red-100 opacity-20"
+                  initial={{ scale: 0.8, opacity: 0 }}
+                  animate={{ scale: 1, opacity: 0.2 }}
+                  transition={{ 
+                    type: "spring", 
+                    bounce: 0.2, 
+                    duration: 0.6 
+                  }}
                 />
               )}
               <div className="relative z-10 flex flex-col items-center">
