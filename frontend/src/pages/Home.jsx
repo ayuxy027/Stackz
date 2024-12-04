@@ -98,11 +98,7 @@ export default function Home() {
     >
       <div className="mb-8">
         <h1 className="text-3xl font-bold text-transparent bg-gradient-to-r from-primary to-secondary bg-clip-text">
-<<<<<<< HEAD
-          Welcome to Stackz✨
-=======
           Welcome to Stackz ✨
->>>>>>> 5409c86fd170cdd303c50fc284e033b74a70dbf8
         </h1>
         <span className='text-lg font-semibold text-transparent bg-gradient-to-r from-primary to-secondary bg-clip-text'>
           Simplify. Diversify. Stack Crypto Wealth
