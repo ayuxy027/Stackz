@@ -4,7 +4,7 @@ import { FiChevronDown, FiChevronUp, FiPlus, FiMinus } from 'react-icons/fi'
 import { formatCurrency } from '../utils/formatCurrency'
 import { useTheme } from '../contexts/ThemeContext'
 
-const SubSection = ({ title, data, render, defaultOpen = false }) => {
+const SubSection = ({ title, data, render, defaultOpen = true }) => {
   const [isOpen, setIsOpen] = useState(defaultOpen)
   const { isDarkMode } = useTheme()
 
@@ -98,7 +98,7 @@ export default function Home() {
     >
       <div className="mb-8">
         <h1 className="text-3xl font-bold text-transparent bg-gradient-to-r from-primary to-secondary bg-clip-text">
-          Welcome to Bagz ✨
+          Welcome to Stackz ✨
         </h1>
         <span className='text-lg font-semibold text-transparent bg-gradient-to-r from-primary to-secondary bg-clip-text'>
           Simplify. Diversify. Stack Crypto Wealth
@@ -106,28 +106,22 @@ export default function Home() {
       </div>
 
       <div className="space-y-6">
-        <SubSection
-          title="Explore"
-          data={exploreData}
-          defaultOpen={true}
+      <SubSection
+          title="Stackz"
+          data={portfolioData}
           render={(data) => (
             <div className="space-y-4">
               {data.map((item) => (
                 <div 
-                  key={item.symbol} 
+                  key={item.name} 
                   className="flex items-center justify-between py-2 border-b border-gray-100 last:border-b-0 dark:border-gray-800"
                 >
-                  <div>
-                    <h3 className="font-semibold text-text-light-primary dark:text-text-dark-primary">
-                      {item.name}
-                    </h3>
-                    <p className="text-sm text-text-light-secondary dark:text-text-dark-secondary">
-                      {item.symbol}
-                    </p>
-                  </div>
+                  <h3 className="font-semibold text-text-light-primary dark:text-text-dark-primary">
+                    {item.name}
+                  </h3>
                   <div className="text-right">
                     <p className="font-semibold text-text-light-primary dark:text-text-dark-primary">
-                      {formatCurrency(item.price)}
+                      {formatCurrency(item.value)}
                     </p>
                     <p className={item.change >= 0 ? 'text-green-500' : 'text-red-500'}>
                       {item.change >= 0 ? '+' : ''}{item.change}%
@@ -138,9 +132,8 @@ export default function Home() {
             </div>
           )}
         />
-
         <SubSection
-          title="SIP"
+          title="Stakz SIP"
           data={sipData}
           render={(data) => (
             <div className="space-y-4">
@@ -171,32 +164,7 @@ export default function Home() {
           )}
         />
 
-        <SubSection
-          title="Portfolio"
-          data={portfolioData}
-          render={(data) => (
-            <div className="space-y-4">
-              {data.map((item) => (
-                <div 
-                  key={item.name} 
-                  className="flex items-center justify-between py-2 border-b border-gray-100 last:border-b-0 dark:border-gray-800"
-                >
-                  <h3 className="font-semibold text-text-light-primary dark:text-text-dark-primary">
-                    {item.name}
-                  </h3>
-                  <div className="text-right">
-                    <p className="font-semibold text-text-light-primary dark:text-text-dark-primary">
-                      {formatCurrency(item.value)}
-                    </p>
-                    <p className={item.change >= 0 ? 'text-green-500' : 'text-red-500'}>
-                      {item.change >= 0 ? '+' : ''}{item.change}%
-                    </p>
-                  </div>
-                </div>
-              ))}
-            </div>
-          )}
-        />
+
       </div>
     </motion.div>
   )
