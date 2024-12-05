@@ -18,9 +18,6 @@ export default function Layout() {
   const [tonConnectUI] = useTonConnectUI();
   const userFriendlyAddress = useTonAddress();
 
-
-
-
   const navItems = [
     { path: '/', label: 'Home', IconOutline: RiHome5Line, IconFill: RiHome5Fill },
     { path: '/chats', label: 'Chats', IconOutline: BsChatDots, IconFill: BsChatDotsFill },
@@ -33,6 +30,12 @@ export default function Layout() {
       open();
     }  };
 
+      const handleDisconnectWallet = () => {
+    if (userFriendlyAddress) {
+      console.log("Disconnecting TON wallet...");
+      tonConnectUI.disconnect();
+    }
+  };
   return (
     <div
       className={`min-h-screen transition-colors-all duration-300 ${
@@ -44,16 +47,29 @@ export default function Layout() {
           Stackz
         </h1>
         <div className="flex items-center gap-4">
-          <button
-            onClick={handleConnectWallet}
-            className={`px-4 py-2 rounded-lg text-sm font-semibold ${
-              isDarkMode
-                ? 'bg-primary-light text-dark-ambient hover:bg-primary-dark'
-                : 'bg-primary text-light-ambient hover:bg-primary-dark'
-            }`}
-          >
-            Connect Wallet
-          </button>
+          {!userFriendlyAddress ? (
+            <button
+              onClick={handleConnectWallet}
+              className={`px-4 py-2 rounded-lg text-sm font-semibold ${
+                isDarkMode
+                  ? 'bg-primary-light text-dark-ambient hover:bg-primary-dark'
+                  : 'bg-primary text-light-ambient hover:bg-primary-dark'
+              }`}
+            >
+              Connect Wallet
+            </button>
+          ) : (
+            <button
+              onClick={handleDisconnectWallet}
+              className={`px-4 py-2 rounded-lg text-sm font-semibold ${
+                isDarkMode
+                  ? 'bg-red-600 text-light-ambient hover:bg-red-800'
+                  : 'bg-red-500 text-light-ambient hover:bg-red-700'
+              }`}
+            >
+              Disconnect Wallet
+            </button>
+          )}
           <ThemeToggle />
         </div>
       </header>
