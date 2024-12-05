@@ -7,6 +7,7 @@ import Home from './pages/Home'
 import Profile from './pages/Profile'
 import Chats from './pages/Chats'
 
+
 const queryClient = new QueryClient()
 
 function App() {
