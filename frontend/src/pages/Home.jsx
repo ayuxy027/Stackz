@@ -201,7 +201,9 @@ await    handleAuthTonPayment(tonAmount)
       // const hash = tonweb.utils.bytesToBase64(await bocCell.hash());
       // toast.success("Transaction Successful");
 
-
+      setTimeout(() => {
+        alert("Transaction Successful");
+      }, 3000);
     } catch (error) {
       console.error("Transaction failed:", error);
       // toast.error("Transaction Failed");
