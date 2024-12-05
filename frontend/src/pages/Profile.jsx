@@ -61,9 +61,9 @@ export default function Profile() {
         transition={{ delay: 0.2 }}
       >
         <div className="flex items-center justify-center w-24 h-24 mx-auto rounded-full shadow-xl bg-gradient-to-br from-primary to-secondary">
-          <span className="text-4xl">👽</span>
+          <span className="text-4xl">🍌</span>
         </div>
-        <h1 className="text-2xl font-bold text-text-light-primary dark:text-text-dark-primary">Memerizer</h1>
+        <h1 className="text-2xl font-bold text-text-light-primary dark:text-text-dark-primary">Ayush Yadav</h1>
         <p className="text-sm text-text-light-secondary dark:text-text-dark-secondary">0x70...52d2</p>
       </motion.div>
 
